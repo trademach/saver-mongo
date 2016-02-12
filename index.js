@@ -3,6 +3,7 @@
 const config = require('config');
 const zmq = require('zmq');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const socket = zmq.socket('sub');
 
@@ -11,7 +12,7 @@ const Tick = mongoose.model('ticks', TickSchema, 'ticks');
 
 function init() {
   mongoose.connect(config.get('mongo.uri'), config.get('mongo.options'), err => {
-    if(err) return console.error(err.stack);
+    if(err) return console.error(err);
 
     // subscribe to all
     socket.connect(config.get('mq.uri'));
@@ -22,7 +23,7 @@ function init() {
 
 function handleMessage(topic, data) {
   const message = JSON.parse(data);
-  message.time = new Date(message.time);
+  message.time = moment(message.time).toDate();
 
   const tick = new Tick(message);
   tick.save(err => {
