@@ -1,0 +1,9 @@
+{
+  "mq": {
+    "uri": "tcp://127.0.0.1:8800"
+  },
+  "mongo": {
+    "uri": "mongodb://localhost:27017/trademach",
+    "options": {}
+  }
+}
