@@ -14,9 +14,8 @@ function init() {
   mongoose.connect(config.get('mongo.uri'), config.get('mongo.options'), err => {
     if(err) return console.error(err);
 
-    // subscribe to all
     socket.connect(config.get('mq.uri'));
-    socket.subscribe('');
+    socket.subscribe(config.get('mq.topic'));
     socket.on('message', handleMessage);
   });
 }
